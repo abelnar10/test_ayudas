@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ayuditas — Te apoyamos con amor</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rosa:       #D4756A;
+    --rosa-suave: #E8A598;
+    --rosa-claro: #F9EDE9;
+    --verde:      #6B8F5E;
+    --verde-suave:#8FAF7E;
+    --crema:      #FDF6F0;
+    --texto:      #3D2B1F;
+    --blanco:     #FFFFFF;
+    --gris:       #F0EDE8;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Inter',sans-serif; background:var(--crema); color:var(--texto); }
+  h1,h2,h3,h4,nav,.logo-text { font-family:'Nunito',sans-serif; }
+
+  /* NAV */
+  nav {
+    background:var(--blanco);
+    padding:14px 40px;
+    display:flex; align-items:center; justify-content:space-between;
+    box-shadow:0 2px 12px rgba(0,0,0,.07);
+    position:sticky; top:0; z-index:100;
+  }
+  .logo { display:flex; align-items:center; gap:10px; text-decoration:none; }
+  .logo-bear { font-size:32px; }
+  .logo-text { font-size:22px; font-weight:900; color:var(--verde); }
+  .logo-text span { color:var(--rosa); }
+  nav ul { list-style:none; display:flex; gap:28px; align-items:center; }
+  nav ul a { text-decoration:none; color:var(--texto); font-weight:600; font-size:15px; transition:.2s; }
+  nav ul a:hover { color:var(--rosa); }
+  .btn { display:inline-block; padding:11px 24px; border-radius:50px; font-weight:700; font-size:15px; text-decoration:none; transition:.2s; cursor:pointer; border:none; font-family:'Nunito',sans-serif; }
+  .btn-rosa { background:var(--rosa); color:#fff; }
+  .btn-rosa:hover { background:#c2665c; transform:translateY(-1px); box-shadow:0 4px 16px rgba(212,117,106,.4); }
+  .btn-outline { border:2px solid var(--verde); color:var(--verde); background:transparent; }
+  .btn-outline:hover { background:var(--verde); color:#fff; }
+
+  /* HERO */
+  .hero {
+    padding:70px 40px;
+    display:flex; align-items:center; justify-content:center; gap:60px;
+    max-width:1100px; margin:0 auto;
+    flex-wrap:wrap;
+  }
+  .hero-img { font-size:180px; line-height:1; text-align:center; animation:float 4s ease-in-out infinite; }
+  @keyframes float { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-12px)} }
+  .hero-text h1 { font-size:44px; font-weight:900; color:var(--verde); line-height:1.15; margin-bottom:12px; }
+  .hero-text h1 span { color:var(--rosa); }
+  .hero-text p { font-size:18px; color:#6b5a54; margin-bottom:28px; max-width:420px; line-height:1.6; }
+  .hero-btns { display:flex; gap:14px; flex-wrap:wrap; }
+  .whatsapp-badge {
+    margin-top:20px; display:inline-flex; align-items:center; gap:8px;
+    background:#25D366; color:#fff; padding:10px 20px; border-radius:50px;
+    font-weight:700; font-size:14px; text-decoration:none;
+  }
+
+  /* SERVICIOS */
+  .section { padding:60px 40px; max-width:1100px; margin:0 auto; }
+  .section-title { text-align:center; font-size:32px; font-weight:900; color:var(--verde); margin-bottom:8px; }
+  .section-sub { text-align:center; color:#7a6860; margin-bottom:40px; font-size:16px; }
+  .services-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(195px,1fr)); gap:20px; }
+  .service-card {
+    background:var(--blanco); border-radius:20px; padding:28px 20px; text-align:center;
+    box-shadow:0 4px 16px rgba(0,0,0,.06); transition:.25s; cursor:pointer;
+    border:2px solid transparent;
+    text-decoration:none; color:var(--texto);
+    display:block;
+  }
+  .service-card:hover { border-color:var(--rosa-suave); transform:translateY(-4px); box-shadow:0 8px 28px rgba(212,117,106,.2); }
+  .service-icon { font-size:52px; margin-bottom:14px; }
+  .service-card h3 { font-size:16px; font-weight:800; color:var(--verde); margin-bottom:8px; line-height:1.3; }
+  .service-card p { font-size:13px; color:#8a7870; line-height:1.5; margin-bottom:14px; }
+  .service-price { font-size:13px; font-weight:700; color:var(--rosa); background:var(--rosa-claro); padding:4px 12px; border-radius:20px; display:inline-block; }
+
+  /* CÓMO FUNCIONA */
+  .how-bg { background:var(--rosa-claro); }
+  .steps { display:flex; gap:30px; justify-content:center; flex-wrap:wrap; margin-top:10px; }
+  .step { text-align:center; max-width:220px; }
+  .step-num { width:56px; height:56px; background:var(--rosa); color:#fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:22px; font-weight:900; margin:0 auto 14px; font-family:'Nunito',sans-serif; }
+  .step h3 { font-size:17px; font-weight:800; color:var(--verde); margin-bottom:6px; }
+  .step p { font-size:14px; color:#7a6860; line-height:1.5; }
+  .step-arrow { font-size:28px; color:var(--rosa-suave); align-self:center; padding-top:20px; }
+
+  /* PAQUETES */
+  .plans-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(230px,1fr)); gap:22px; }
+  .plan-card {
+    background:var(--blanco); border-radius:20px; padding:32px 24px; text-align:center;
+    box-shadow:0 4px 16px rgba(0,0,0,.06); border:2px solid var(--gris); position:relative;
+  }
+  .plan-card.featured { border-color:var(--rosa); transform:scale(1.04); box-shadow:0 8px 32px rgba(212,117,106,.25); }
+  .plan-badge { position:absolute; top:-12px; left:50%; transform:translateX(-50%); background:var(--rosa); color:#fff; padding:4px 18px; border-radius:20px; font-size:12px; font-weight:800; white-space:nowrap; font-family:'Nunito',sans-serif; }
+  .plan-hours { font-size:48px; font-weight:900; color:var(--verde); font-family:'Nunito',sans-serif; line-height:1; }
+  .plan-hours span { font-size:18px; font-weight:700; }
+  .plan-price { font-size:28px; font-weight:900; color:var(--rosa); margin:10px 0; font-family:'Nunito',sans-serif; }
+  .plan-price small { font-size:14px; color:#9a8880; font-weight:500; }
+  .plan-discount { font-size:13px; color:var(--verde-suave); font-weight:700; margin-bottom:20px; }
+  .plan-validity { font-size:13px; color:#9a8880; margin-bottom:20px; }
+
+  /* QUIÉNES SOMOS */
+  .about-grid { display:grid; grid-template-columns:1fr 1fr; gap:40px; align-items:center; flex-wrap:wrap; }
+  .about-bear { font-size:150px; text-align:center; }
+  .about-item { display:flex; gap:16px; margin-bottom:24px; align-items:flex-start; }
+  .about-icon { font-size:30px; margin-top:2px; }
+  .about-item h3 { font-size:18px; font-weight:800; color:var(--verde); margin-bottom:4px; }
+  .about-item p { font-size:14px; color:#6b5a54; line-height:1.6; }
+
+  /* CONTACTO */
+  .contact-bg { background:var(--verde); color:#fff; }
+  .contact-bg .section-title { color:#fff; }
+  .contact-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:24px; margin-top:20px; }
+  .contact-card { background:rgba(255,255,255,.1); border-radius:16px; padding:24px; text-align:center; }
+  .contact-card .icon { font-size:36px; margin-bottom:10px; }
+  .contact-card p { font-size:15px; font-weight:600; color:#fff; }
+  .contact-card small { font-size:13px; color:rgba(255,255,255,.7); }
+
+  /* FOOTER */
+  footer { background:#2a1f1b; color:rgba(255,255,255,.7); text-align:center; padding:24px 40px; font-size:14px; }
+  footer strong { color:#fff; }
+
+  /* BADGE AGENDAMIENTO */
+  .agendar-banner {
+    background:linear-gradient(135deg, var(--rosa) 0%, #c2665c 100%);
+    color:#fff; text-align:center; padding:40px 40px;
+  }
+  .agendar-banner h2 { font-size:28px; font-weight:900; margin-bottom:8px; }
+  .agendar-banner p { font-size:16px; margin-bottom:24px; opacity:.9; }
+  .agendar-banner .btn { background:#fff; color:var(--rosa); font-size:17px; padding:14px 36px; }
+  .agendar-banner .btn:hover { background:var(--rosa-claro); }
+
+  /* MODAL AGENDAMIENTO */
+  .modal-overlay {
+    display:none; position:fixed; inset:0; background:rgba(0,0,0,.5);
+    z-index:999; align-items:center; justify-content:center; padding:20px;
+  }
+  .modal-overlay.active { display:flex; }
+  .modal {
+    background:#fff; border-radius:24px; max-width:600px; width:100%;
+    max-height:90vh; overflow-y:auto; padding:36px;
+    animation:slideUp .3s ease;
+  }
+  @keyframes slideUp { from{transform:translateY(30px);opacity:0} to{transform:translateY(0);opacity:1} }
+  .modal-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:28px; }
+  .modal-header h2 { font-size:22px; font-weight:900; color:var(--verde); }
+  .modal-close { font-size:24px; cursor:pointer; color:#9a8880; background:none; border:none; }
+  .steps-indicator { display:flex; gap:8px; margin-bottom:28px; }
+  .step-dot { flex:1; height:6px; border-radius:3px; background:var(--gris); transition:.3s; }
+  .step-dot.active { background:var(--rosa); }
+  .step-dot.done { background:var(--verde-suave); }
+  .form-step { display:none; }
+  .form-step.active { display:block; }
+  .form-group { margin-bottom:18px; }
+  .form-group label { display:block; font-weight:700; font-size:14px; color:var(--verde); margin-bottom:6px; font-family:'Nunito',sans-serif; }
+  .form-group input, .form-group select, .form-group textarea {
+    width:100%; padding:12px 16px; border:2px solid var(--gris); border-radius:12px;
+    font-size:15px; font-family:'Inter',sans-serif; color:var(--texto); outline:none; transition:.2s;
+  }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color:var(--rosa-suave); }
+  .service-options { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+  .service-option { border:2px solid var(--gris); border-radius:12px; padding:14px; cursor:pointer; transition:.2s; }
+  .service-option:hover, .service-option.selected { border-color:var(--rosa); background:var(--rosa-claro); }
+  .service-option .opt-icon { font-size:28px; margin-bottom:6px; }
+  .service-option .opt-name { font-size:13px; font-weight:700; color:var(--verde); font-family:'Nunito',sans-serif; }
+  .service-option .opt-price { font-size:12px; color:var(--rosa); }
+  .form-nav { display:flex; justify-content:space-between; margin-top:24px; }
+  .resumen-box { background:var(--crema); border-radius:16px; padding:20px; margin-bottom:20px; }
+  .resumen-row { display:flex; justify-content:space-between; padding:8px 0; border-bottom:1px solid var(--gris); font-size:14px; }
+  .resumen-row:last-child { border-bottom:none; font-weight:700; color:var(--rosa); font-size:16px; }
+  .success-box { text-align:center; padding:20px 0; }
+  .success-box .success-icon { font-size:80px; margin-bottom:16px; }
+  .success-box h3 { font-size:24px; font-weight:900; color:var(--verde); margin-bottom:8px; }
+  .success-box p { color:#6b5a54; line-height:1.6; }
+  .booking-num { background:var(--rosa-claro); border-radius:12px; padding:12px 24px; display:inline-block; margin:16px 0; font-weight:900; font-size:18px; color:var(--rosa); font-family:'Nunito',sans-serif; }
+
+  @media(max-width:700px) {
+    nav ul { display:none; }
+    .hero { padding:40px 20px; gap:20px; }
+    .hero-img { font-size:100px; }
+    .hero-text h1 { font-size:30px; }
+    .section { padding:40px 20px; }
+    .about-grid { grid-template-columns:1fr; }
+    .about-bear { font-size:80px; }
+    .service-options { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a href="#" class="logo">
+    <span class="logo-bear">🐻</span>
+    <span class="logo-text">Ayu<span>ditas</span></span>
+  </a>
+  <ul>
+    <li><a href="#servicios">Servicios</a></li>
+    <li><a href="#como-funciona">¿Cómo funciona?</a></li>
+    <li><a href="#paquetes">Paquetes</a></li>
+    <li><a href="#quienes-somos">Nosotros</a></li>
+    <li><a href="#contacto">Contacto</a></li>
+    <li><a href="portal-cliente.html" class="btn btn-outline">Mi cuenta</a></li>
+    <li><a href="#" class="btn btn-rosa" onclick="abrirAgendamiento()">Agendar ♥</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section style="background:var(--crema); padding-top:10px;">
+  <div class="hero">
+    <div class="hero-img">🐻‍🧸</div>
+    <div class="hero-text">
+      <h1>Tu aliado <span>confiable</span> para<br>simplificar tu vida y la<br>de tus seres queridos</h1>
+      <p>Te apoyamos con amor en todo lo que necesites ♥<br>Ibagué, Tolima – Colombia</p>
+      <div class="hero-btns">
+        <a href="#" class="btn btn-rosa" onclick="abrirAgendamiento(); return false;">📅 Agendar mi servicio</a>
+        <a href="#servicios" class="btn btn-outline">Ver servicios</a>
+      </div>
+      <a href="https://wa.me/573174544424" class="whatsapp-badge" target="_blank">
+        💬 WhatsApp: 317 454 4424
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICIOS -->
+<section class="section" id="servicios">
+  <h2 class="section-title">🐻 Nuestros Servicios</h2>
+  <p class="section-sub">¿En qué podemos ayudarte hoy? Agenda con tiempo tus servicios ♥</p>
+  <div class="services-grid">
+    <a href="servicio-detalle.html" class="service-card">
+      <div class="service-icon">👴🏼</div>
+      <h3>Acompañamiento Adulto Mayor</h3>
+      <p>Citas médicas, trámites, compañía y apoyo cotidiano con amor</p>
+      <span class="service-price">Desde $25.000/h</span>
+    </a>
+    <a href="servicio-detalle.html" class="service-card">
+      <div class="service-icon">🛒</div>
+      <h3>Compras y Trámites Simples</h3>
+      <p>Supermercados, farmacias, pago de cuentas, hacemos las filas por ti</p>
+      <span class="service-price">Desde $20.000/h</span>
+    </a>
+    <a href="servicio-detalle.html" class="service-card">
+      <div class="service-icon">🏠</div>
+      <h3>Ayuda en el Hogar</h3>
+      <p>Limpieza, organización, tareas domésticas y arreglos menores</p>
+      <span class="service-price">Desde $22.000/h</span>
+    </a>
+    <a href="servicio-detalle.html" class="service-card">
+      <div class="service-icon">📱</div>
+      <h3>Ayuda Tecnológica</h3>
+      <p>Celular, computador, TV, apps simples y trámites digitales</p>
+      <span class="service-price">Desde $25.000/h</span>
+    </a>
+    <a href="servicio-detalle.html" class="service-card">
+      <div class="service-icon">💻</div>
+      <h3>Ayuda Tecnológica Avanzada</h3>
+      <p>Configuración de televisores, cámaras y computadores avanzados</p>
+      <span class="service-price">Desde $35.000/h</span>
+    </a>
+  </div>
+</section>
+
+<!-- CÓMO FUNCIONA -->
+<section class="how-bg" id="como-funciona">
+  <div class="section">
+    <h2 class="section-title">¿Cómo funciona?</h2>
+    <p class="section-sub">Simple y rápido — en 3 pasos</p>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <h3>Elige tu servicio</h3>
+        <p>Selecciona el tipo de ayuda y las tareas específicas que necesitas</p>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <h3>Agenda tu fecha</h3>
+        <p>Escoge el día y la hora que mejor te convenga en nuestro calendario</p>
+      </div>
+      <div class="step-arrow">→</div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <h3>Llegamos con amor</h3>
+        <p>Tu Ayudita llega puntual. Recibirás notificación cuando esté en camino 🐻♥</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PAQUETES -->
+<section class="section" id="paquetes">
+  <h2 class="section-title">💛 Paquetes de Cuidado</h2>
+  <p class="section-sub">Ahorra comprando horas por adelantado — válidas para cualquier servicio</p>
+  <div class="plans-grid">
+    <div class="plan-card">
+      <div class="plan-hours">10 <span>horas</span></div>
+      <div class="plan-price">$200.000 <small>COP</small></div>
+      <div class="plan-discount">✓ Ahorras 8%</div>
+      <div class="plan-validity">Válido por 60 días</div>
+      <a href="#" class="btn btn-outline" onclick="abrirAgendamiento(); return false;">Comprar paquete</a>
+    </div>
+    <div class="plan-card featured">
+      <span class="plan-badge">⭐ Más popular</span>
+      <div class="plan-hours">20 <span>horas</span></div>
+      <div class="plan-price">$380.000 <small>COP</small></div>
+      <div class="plan-discount">✓ Ahorras 12%</div>
+      <div class="plan-validity">Válido por 90 días</div>
+      <a href="#" class="btn btn-rosa" onclick="abrirAgendamiento(); return false;">Comprar paquete</a>
+    </div>
+    <div class="plan-card">
+      <div class="plan-hours">30 <span>horas</span></div>
+      <div class="plan-price">$540.000 <small>COP</small></div>
+      <div class="plan-discount">✓ Ahorras 18%</div>
+      <div class="plan-validity">Válido por 120 días</div>
+      <a href="#" class="btn btn-outline" onclick="abrirAgendamiento(); return false;">Comprar paquete</a>
+    </div>
+  </div>
+</section>
+
+<!-- QUIÉNES SOMOS -->
+<section class="section" id="quienes-somos" style="background:var(--blanco); max-width:100%; padding:60px 0;">
+  <div class="section" style="padding-top:0; padding-bottom:0;">
+    <h2 class="section-title">¿Quiénes somos?</h2>
+    <p class="section-sub">Tu apoyo humano confiable en Ibagué</p>
+    <div class="about-grid">
+      <div>
+        <div class="about-item">
+          <div class="about-icon">🎯</div>
+          <div>
+            <h3>Nuestra Misión</h3>
+            <p>Brindar apoyo con amor, respeto y compromiso, promoviendo el bienestar integral de los adultos mayores y sus familias.</p>
+          </div>
+        </div>
+        <div class="about-item">
+          <div class="about-icon">👁️</div>
+          <div>
+            <h3>Nuestra Visión</h3>
+            <p>Ser el referente de confianza en el apoyo del hogar en Ibagué, reconocidos por nuestra calidez humana.</p>
+          </div>
+        </div>
+        <div class="about-item">
+          <div class="about-icon">♥️</div>
+          <div>
+            <h3>Nuestros Valores</h3>
+            <p>Amor, respeto, puntualidad, honestidad y compromiso con cada familia que nos confía sus seres queridos.</p>
+          </div>
+        </div>
+      </div>
+      <div class="about-bear">🐻🐻</div>
+    </div>
+  </div>
+</section>
+
+<!-- BANNER AGENDAMIENTO -->
+<div class="agendar-banner">
+  <h2>📅 ¡Agenda con tiempo tus servicios!</h2>
+  <p>Pequeñas ayudas, grandes cambios en tu día a día.</p>
+  <a href="#" class="btn" onclick="abrirAgendamiento(); return false;">Agendar ahora ♥</a>
+</div>
+
+<!-- CONTACTO -->
+<section class="contact-bg" id="contacto">
+  <div class="section">
+    <h2 class="section-title">Contáctanos</h2>
+    <div class="contact-grid">
+      <div class="contact-card">
+        <div class="icon">💬</div>
+        <p>317 454 4424</p>
+        <p>3165202540</p>
+        <small>WhatsApp disponible</small>
+      </div>
+      <div class="contact-card">
+        <div class="icon">✉️</div>
+        <p>ayuditas888@gmail.com</p>
+        <small>Respondemos en el día</small>
+      </div>
+      <div class="contact-card">
+        <div class="icon">📍</div>
+        <p>Ibagué – Tolima</p>
+        <p>Colombia</p>
+        <small>Servicio a domicilio</small>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <strong>🐻 Ayuditas</strong> — Te apoyamos con amor en todo lo que necesites ♥<br>
+  Ibagué, Tolima, Colombia · ayuditas888@gmail.com · WhatsApp: 317 454 4424<br><br>
+  <small>© 2026 Ayuditas. Pequeñas ayudas, grandes cambios en tu día a día.</small>
+</footer>
+
+<!-- MODAL AGENDAMIENTO -->
+<div class="modal-overlay" id="modalAgendamiento">
+  <div class="modal">
+    <div class="modal-header">
+      <h2>🐻 Agendar Servicio</h2>
+      <button class="modal-close" onclick="cerrarAgendamiento()">✕</button>
+    </div>
+
+    <div class="steps-indicator">
+      <div class="step-dot active" id="dot1"></div>
+      <div class="step-dot" id="dot2"></div>
+      <div class="step-dot" id="dot3"></div>
+      <div class="step-dot" id="dot4"></div>
+      <div class="step-dot" id="dot5"></div>
+    </div>
+
+    <!-- PASO 1: Servicio -->
+    <div class="form-step active" id="paso1">
+      <h3 style="color:var(--verde);font-family:'Nunito',sans-serif;margin-bottom:16px;">Paso 1 — ¿Qué tipo de ayuda necesitas?</h3>
+      <div class="service-options">
+        <div class="service-option selected" onclick="selectService(this)">
+          <div class="opt-icon">👴🏼</div>
+          <div class="opt-name">Acompañamiento Adulto Mayor</div>
+          <div class="opt-price">Desde $25.000/h · mín. 2h</div>
+        </div>
+        <div class="service-option" onclick="selectService(this)">
+          <div class="opt-icon">🛒</div>
+          <div class="opt-name">Compras y Trámites</div>
+          <div class="opt-price">Desde $20.000/h · mín. 1h</div>
+        </div>
+        <div class="service-option" onclick="selectService(this)">
+          <div class="opt-icon">🏠</div>
+          <div class="opt-name">Ayuda en el Hogar</div>
+          <div class="opt-price">Desde $22.000/h · mín. 2h</div>
+        </div>
+        <div class="service-option" onclick="selectService(this)">
+          <div class="opt-icon">📱</div>
+          <div class="opt-name">Ayuda Tecnológica</div>
+          <div class="opt-price">Desde $25.000/h · mín. 1h</div>
+        </div>
+      </div>
+      <div class="form-group" style="margin-top:18px;">
+        <label>Duración estimada (horas)</label>
+        <select id="duracion">
+          <option value="1">1 hora — mínimo</option>
+          <option value="2" selected>2 horas</option>
+          <option value="3">3 horas</option>
+          <option value="4">4 horas</option>
+          <option value="5">5 horas</option>
+          <option value="6">6 horas</option>
+        </select>
+      </div>
+      <div class="form-nav">
+        <div></div>
+        <button class="btn btn-rosa" onclick="irPaso(2)">Continuar →</button>
+      </div>
+    </div>
+
+    <!-- PASO 2: Fecha -->
+    <div class="form-step" id="paso2">
+      <h3 style="color:var(--verde);font-family:'Nunito',sans-serif;margin-bottom:16px;">Paso 2 — ¿Cuándo nos necesitas?</h3>
+      <div class="form-group">
+        <label>Fecha del servicio</label>
+        <input type="date" id="fecha" min="">
+      </div>
+      <div class="form-group">
+        <label>Hora de inicio</label>
+        <select id="hora">
+          <option>7:00 AM</option>
+          <option>8:00 AM</option>
+          <option selected>9:00 AM</option>
+          <option>10:00 AM</option>
+          <option>11:00 AM</option>
+          <option>12:00 PM</option>
+          <option>2:00 PM</option>
+          <option>3:00 PM</option>
+          <option>4:00 PM</option>
+        </select>
+      </div>
+      <p style="font-size:13px;color:var(--verde);background:var(--rosa-claro);padding:12px;border-radius:12px;">
+        🐻 <strong>3 Ayuditas disponibles</strong> para esa fecha y hora en tu zona
+      </p>
+      <div class="form-nav">
+        <button class="btn btn-outline" onclick="irPaso(1)">← Atrás</button>
+        <button class="btn btn-rosa" onclick="irPaso(3)">Continuar →</button>
+      </div>
+    </div>
+
+    <!-- PASO 3: Datos -->
+    <div class="form-step" id="paso3">
+      <h3 style="color:var(--verde);font-family:'Nunito',sans-serif;margin-bottom:16px;">Paso 3 — Datos de contacto</h3>
+      <div class="form-group">
+        <label>Tu nombre completo</label>
+        <input type="text" placeholder="María González" id="nombre">
+      </div>
+      <div class="form-group">
+        <label>WhatsApp o teléfono</label>
+        <input type="tel" placeholder="317 454 4424" id="telefono">
+      </div>
+      <div class="form-group">
+        <label>¿Para quién es el servicio?</label>
+        <input type="text" placeholder="Nombre del adulto mayor o familiar" id="receptor">
+      </div>
+      <div class="form-group">
+        <label>Dirección del servicio</label>
+        <input type="text" placeholder="Calle 60 #12-34, Barrio, Ibagué" id="direccion">
+      </div>
+      <div class="form-group">
+        <label>Notas especiales (opcional)</label>
+        <textarea rows="3" placeholder="Ej: el señor tiene hipertensión, prefiere que lleguen antes de las 9am..." id="notas"></textarea>
+      </div>
+      <div class="form-nav">
+        <button class="btn btn-outline" onclick="irPaso(2)">← Atrás</button>
+        <button class="btn btn-rosa" onclick="irPaso(4)">Continuar →</button>
+      </div>
+    </div>
+
+    <!-- PASO 4: Resumen -->
+    <div class="form-step" id="paso4">
+      <h3 style="color:var(--verde);font-family:'Nunito',sans-serif;margin-bottom:16px;">Paso 4 — Resumen de tu reserva</h3>
+      <div class="resumen-box">
+        <div class="resumen-row"><span>Servicio</span><span id="r-servicio">Acompañamiento</span></div>
+        <div class="resumen-row"><span>Fecha</span><span id="r-fecha">—</span></div>
+        <div class="resumen-row"><span>Hora</span><span id="r-hora">9:00 AM</span></div>
+        <div class="resumen-row"><span>Duración</span><span id="r-duracion">2 horas</span></div>
+        <div class="resumen-row"><span>Para</span><span id="r-receptor">—</span></div>
+        <div class="resumen-row"><span>Dirección</span><span id="r-dir" style="text-align:right;max-width:200px;">—</span></div>
+        <div class="resumen-row"><span>💰 Total estimado</span><span id="r-total">$50.000 COP</span></div>
+      </div>
+      <p style="font-size:13px;color:#9a8880;margin-bottom:16px;">
+        * El pago se coordina directamente con nuestro equipo vía WhatsApp o al momento del servicio.
+      </p>
+      <div style="background:var(--rosa-claro);padding:14px;border-radius:12px;font-size:13px;color:var(--rosa);font-weight:600;">
+        💬 Tras confirmar, te escribiremos al WhatsApp para coordinar los detalles finales.
+      </div>
+      <div class="form-nav" style="margin-top:20px;">
+        <button class="btn btn-outline" onclick="irPaso(3)">← Atrás</button>
+        <button class="btn btn-rosa" onclick="confirmarReserva()">✓ Confirmar reserva</button>
+      </div>
+    </div>
+
+    <!-- PASO 5: Éxito -->
+    <div class="form-step" id="paso5">
+      <div class="success-box">
+        <div class="success-icon">🐻🎉</div>
+        <h3>¡Reserva confirmada!</h3>
+        <div class="booking-num">AYU-20260520-0001</div>
+        <p>
+          Hemos recibido tu solicitud con amor ♥<br>
+          Te escribiremos al WhatsApp <strong id="r-tel">—</strong> para coordinar tu Ayudita.
+        </p>
+        <br>
+        <a href="https://wa.me/573174544424" class="btn btn-rosa" target="_blank">
+          💬 Escribir al WhatsApp
+        </a>
+        <br><br>
+        <button class="btn btn-outline" onclick="cerrarAgendamiento()">Cerrar</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<script>
+  // Fecha mínima = mañana
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  document.getElementById('fecha').min = tomorrow.toISOString().split('T')[0];
+  document.getElementById('fecha').value = tomorrow.toISOString().split('T')[0];
+
+  function abrirAgendamiento() {
+    document.getElementById('modalAgendamiento').classList.add('active');
+    document.body.style.overflow = 'hidden';
+  }
+  function cerrarAgendamiento() {
+    document.getElementById('modalAgendamiento').classList.remove('active');
+    document.body.style.overflow = '';
+  }
+  document.getElementById('modalAgendamiento').addEventListener('click', function(e) {
+    if (e.target === this) cerrarAgendamiento();
+  });
+
+  function selectService(el) {
+    document.querySelectorAll('.service-option').forEach(o => o.classList.remove('selected'));
+    el.classList.add('selected');
+  }
+
+  const precios = { 0:25000, 1:20000, 2:22000, 3:25000 };
+
+  function irPaso(n) {
+    document.querySelectorAll('.form-step').forEach(s => s.classList.remove('active'));
+    document.getElementById('paso' + n).classList.add('active');
+    for (let i = 1; i <= 5; i++) {
+      const dot = document.getElementById('dot' + i);
+      dot.className = 'step-dot' + (i < n ? ' done' : i === n ? ' active' : '');
+    }
+    if (n === 4) llenarResumen();
+  }
+
+  function llenarResumen() {
+    const selected = document.querySelector('.service-option.selected');
+    const svcName = selected ? selected.querySelector('.opt-name').textContent : '—';
+    const svcIdx = [...document.querySelectorAll('.service-option')].indexOf(selected);
+    const horas = parseInt(document.getElementById('duracion').value);
+    const precio = (precios[svcIdx] || 25000) * horas;
+
+    document.getElementById('r-servicio').textContent = svcName;
+    document.getElementById('r-fecha').textContent = document.getElementById('fecha').value;
+    document.getElementById('r-hora').textContent = document.getElementById('hora').value;
+    document.getElementById('r-duracion').textContent = horas + ' hora' + (horas > 1 ? 's' : '');
+    document.getElementById('r-receptor').textContent = document.getElementById('receptor').value || '—';
+    document.getElementById('r-dir').textContent = document.getElementById('direccion').value || '—';
+    document.getElementById('r-total').textContent = '$' + precio.toLocaleString('es-CO') + ' COP';
+  }
+
+  function confirmarReserva() {
+    const tel = document.getElementById('telefono').value || '—';
+    document.getElementById('r-tel').textContent = tel;
+    irPaso(5);
+  }
+</script>
+</body>
+</html>

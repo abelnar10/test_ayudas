@@ -1,0 +1,532 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin — Ayuditas</title>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --rosa:#D4756A; --rosa-suave:#E8A598; --rosa-claro:#F9EDE9;
+    --verde:#6B8F5E; --verde-suave:#8FAF7E;
+    --crema:#FDF6F0; --texto:#3D2B1F; --blanco:#FFFFFF; --gris:#F0EDE8;
+  }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  body { font-family:'Inter',sans-serif; background:#F3F4F6; color:var(--texto); }
+  h1,h2,h3,h4 { font-family:'Nunito',sans-serif; }
+  a { text-decoration:none; }
+
+  /* LOGIN */
+  .login-wrap { min-height:100vh; display:flex; align-items:center; justify-content:center; background:linear-gradient(135deg, var(--verde) 0%, #4a6b40 100%); padding:20px; }
+  .login-box { background:#fff; border-radius:24px; padding:40px; max-width:400px; width:100%; box-shadow:0 20px 60px rgba(0,0,0,.2); }
+  .login-box .bear { font-size:56px; text-align:center; margin-bottom:8px; }
+  .login-box h2 { font-size:24px; font-weight:900; color:var(--verde); text-align:center; margin-bottom:4px; }
+  .login-box p { color:#9a8880; text-align:center; font-size:14px; margin-bottom:28px; }
+  .form-group { margin-bottom:16px; }
+  .form-group label { display:block; font-weight:700; font-size:13px; color:var(--verde); margin-bottom:6px; }
+  .form-group input { width:100%; padding:13px 16px; border:2px solid var(--gris); border-radius:12px; font-size:15px; outline:none; transition:.2s; }
+  .form-group input:focus { border-color:var(--verde-suave); }
+  .btn { padding:12px 22px; border-radius:50px; font-weight:700; font-size:14px; cursor:pointer; border:none; font-family:'Nunito',sans-serif; transition:.2s; display:inline-block; text-align:center; }
+  .btn-block { display:block; width:100%; padding:14px; font-size:16px; }
+  .btn-verde { background:var(--verde); color:#fff; }
+  .btn-verde:hover { background:#527845; }
+  .btn-rosa { background:var(--rosa); color:#fff; }
+  .btn-rosa:hover { background:#c2665c; }
+  .btn-outline { background:transparent; border:2px solid var(--gris); color:var(--texto); }
+  .btn-sm { padding:7px 16px; font-size:13px; }
+  .btn-xs { padding:5px 12px; font-size:12px; }
+
+  /* LAYOUT */
+  .app-layout { display:none; min-height:100vh; }
+  .app-layout.visible { display:flex; }
+  .sidebar { width:220px; background:var(--verde); flex-shrink:0; display:flex; flex-direction:column; }
+  .sidebar-logo { padding:22px 20px; display:flex; align-items:center; gap:10px; border-bottom:1px solid rgba(255,255,255,.15); }
+  .sidebar-logo span { font-size:28px; }
+  .sidebar-logo h1 { font-size:20px; font-weight:900; color:#fff; }
+  .sidebar-logo h1 em { color:var(--rosa-suave); font-style:normal; }
+  .sidebar nav { flex:1; padding:16px 0; }
+  .nav-group { padding:6px 16px 4px; font-size:11px; font-weight:700; color:rgba(255,255,255,.5); text-transform:uppercase; letter-spacing:.5px; margin-top:8px; }
+  .nav-link { display:flex; align-items:center; gap:10px; padding:11px 20px; color:rgba(255,255,255,.8); font-size:14px; font-weight:600; cursor:pointer; transition:.2s; border:none; background:none; width:100%; text-align:left; }
+  .nav-link:hover, .nav-link.active { background:rgba(255,255,255,.15); color:#fff; border-right:3px solid var(--rosa-suave); }
+  .nav-link .icon { font-size:18px; }
+  .sidebar-footer { padding:16px 20px; border-top:1px solid rgba(255,255,255,.15); }
+  .sidebar-user { display:flex; align-items:center; gap:10px; color:rgba(255,255,255,.8); font-size:13px; }
+  .sidebar-avatar { width:32px; height:32px; background:var(--rosa); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:16px; }
+
+  /* MAIN */
+  .main-wrap { flex:1; display:flex; flex-direction:column; overflow:hidden; }
+  .main-header { background:#fff; padding:16px 28px; display:flex; align-items:center; justify-content:space-between; border-bottom:1px solid var(--gris); }
+  .main-header h2 { font-size:20px; font-weight:900; color:var(--texto); }
+  .main-header .date { font-size:13px; color:#9a8880; margin-top:2px; }
+  .main-content { flex:1; padding:24px 28px; overflow-y:auto; }
+
+  /* PAGES */
+  .page { display:none; }
+  .page.active { display:block; }
+
+  /* KPI CARDS */
+  .kpi-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:18px; margin-bottom:24px; }
+  .kpi-card { background:#fff; border-radius:16px; padding:20px; box-shadow:0 2px 8px rgba(0,0,0,.05); }
+  .kpi-value { font-size:32px; font-weight:900; font-family:'Nunito',sans-serif; color:var(--verde); }
+  .kpi-label { font-size:13px; color:#9a8880; margin-top:4px; }
+  .kpi-change { font-size:12px; font-weight:600; color:var(--verde-suave); margin-top:6px; }
+  .kpi-card.rosa .kpi-value { color:var(--rosa); }
+
+  /* TABLES */
+  .table-card { background:#fff; border-radius:16px; box-shadow:0 2px 8px rgba(0,0,0,.05); overflow:hidden; margin-bottom:24px; }
+  .table-header { padding:16px 20px; border-bottom:1px solid var(--gris); display:flex; justify-content:space-between; align-items:center; }
+  .table-header h3 { font-size:16px; color:var(--verde); }
+  table { width:100%; border-collapse:collapse; }
+  th { text-align:left; padding:12px 16px; font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:.5px; color:#9a8880; background:#FAFAFA; border-bottom:1px solid var(--gris); }
+  td { padding:14px 16px; font-size:14px; border-bottom:1px solid var(--gris); }
+  tr:last-child td { border-bottom:none; }
+  tr:hover td { background:#FAFAFA; }
+  .badge { display:inline-block; padding:4px 10px; border-radius:20px; font-size:12px; font-weight:700; font-family:'Nunito',sans-serif; }
+  .badge-yellow { background:#FEF3C7; color:#D97706; }
+  .badge-blue   { background:#DBEAFE; color:#2563EB; }
+  .badge-orange { background:#FFEDD5; color:#EA580C; }
+  .badge-green  { background:#D1FAE5; color:#059669; }
+  .badge-gray   { background:#F3F4F6; color:#6B7280; }
+  .badge-red    { background:#FEE2E2; color:#DC2626; }
+
+  /* ALERTAS */
+  .alert-card { background:#FEF3C7; border:1px solid #FCD34D; border-radius:12px; padding:14px 18px; margin-bottom:16px; display:flex; align-items:center; gap:12px; }
+  .alert-card .icon { font-size:22px; }
+  .alert-card p { font-size:14px; font-weight:600; color:#92400E; }
+  .alert-card .alert-actions { margin-left:auto; display:flex; gap:8px; }
+
+  /* REAL TIME */
+  .realtime-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:24px; }
+  .helper-status { background:#fff; border-radius:12px; padding:14px; display:flex; align-items:center; gap:12px; box-shadow:0 2px 8px rgba(0,0,0,.05); }
+  .hs-dot { width:10px; height:10px; border-radius:50%; flex-shrink:0; }
+  .hs-dot.green { background:#10B981; box-shadow:0 0 0 3px #D1FAE5; }
+  .hs-dot.blue { background:#3B82F6; box-shadow:0 0 0 3px #DBEAFE; }
+  .hs-dot.yellow { background:#F59E0B; box-shadow:0 0 0 3px #FEF3C7; }
+  .hs-name { font-weight:700; font-size:14px; }
+  .hs-info { font-size:12px; color:#9a8880; }
+
+  /* CHARTS (fake bars) */
+  .chart-bar-wrap { margin-top:12px; }
+  .bar-row { display:flex; align-items:center; gap:10px; margin-bottom:10px; }
+  .bar-label { font-size:13px; width:160px; flex-shrink:0; }
+  .bar-track { flex:1; background:var(--gris); border-radius:6px; height:10px; overflow:hidden; }
+  .bar-fill { height:100%; border-radius:6px; background:var(--rosa); transition:width 1s; }
+  .bar-pct { font-size:12px; font-weight:700; color:var(--verde); width:36px; flex-shrink:0; }
+
+  /* FORM MODAL */
+  .overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.4); z-index:200; align-items:center; justify-content:center; padding:20px; }
+  .overlay.open { display:flex; }
+  .modal-box { background:#fff; border-radius:20px; padding:32px; max-width:500px; width:100%; max-height:90vh; overflow-y:auto; }
+  .modal-box h3 { font-size:20px; color:var(--verde); margin-bottom:20px; }
+
+  @media(max-width:900px) {
+    .sidebar { display:none; }
+    .kpi-grid { grid-template-columns:1fr 1fr; }
+    .realtime-grid { grid-template-columns:1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- LOGIN -->
+<div class="login-wrap" id="loginWrap">
+  <div class="login-box">
+    <div class="bear">🐻</div>
+    <h2>Panel Administrador</h2>
+    <p>Ayuditas — Ibagué, Colombia</p>
+    <div class="form-group">
+      <label>Correo</label>
+      <input type="email" value="admin@ayuditas.com">
+    </div>
+    <div class="form-group">
+      <label>Contraseña</label>
+      <input type="password" value="admin123">
+    </div>
+    <button class="btn btn-verde btn-block" onclick="entrarAdmin()">Ingresar al panel ♥</button>
+  </div>
+</div>
+
+<!-- APP ADMIN -->
+<div class="app-layout" id="adminApp">
+  <div class="sidebar">
+    <div class="sidebar-logo">
+      <span>🐻</span>
+      <h1>Ayu<em>ditas</em></h1>
+    </div>
+    <nav>
+      <div class="nav-group">Operaciones</div>
+      <button class="nav-link active" id="link-dashboard" onclick="showPage('dashboard')"><span class="icon">📊</span>Dashboard</button>
+      <button class="nav-link" id="link-agenda" onclick="showPage('agenda')"><span class="icon">📅</span>Agenda</button>
+      <button class="nav-link" id="link-reservas" onclick="showPage('reservas')"><span class="icon">📋</span>Reservas</button>
+      <div class="nav-group">Personas</div>
+      <button class="nav-link" id="link-clientes" onclick="showPage('clientes')"><span class="icon">👥</span>Clientes</button>
+      <button class="nav-link" id="link-ayudantes" onclick="showPage('ayudantes')"><span class="icon">🤝</span>Ayudantes</button>
+      <div class="nav-group">Finanzas</div>
+      <button class="nav-link" id="link-financiero" onclick="showPage('financiero')"><span class="icon">💰</span>Financiero</button>
+      <button class="nav-link" id="link-reportes" onclick="showPage('reportes')"><span class="icon">📈</span>Reportes</button>
+      <div class="nav-group">Sistema</div>
+      <button class="nav-link" id="link-config" onclick="showPage('config')"><span class="icon">⚙️</span>Configuración</button>
+    </nav>
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-avatar">👤</div>
+        <div><div style="color:#fff;font-weight:700;font-size:13px;">Administrador</div><div style="font-size:12px;">Ayuditas</div></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main-wrap">
+    <div class="main-header">
+      <div>
+        <h2 id="pageTitle">Dashboard General</h2>
+        <div class="date">Jueves 15 de mayo de 2026 · Ibagué, Tolima</div>
+      </div>
+      <button class="btn btn-rosa btn-sm" onclick="abrirNuevaReserva()">+ Nueva reserva</button>
+    </div>
+
+    <div class="main-content">
+
+      <!-- DASHBOARD -->
+      <div class="page active" id="page-dashboard">
+        <div class="alert-card">
+          <span class="icon">⚠️</span>
+          <p>2 reservas sin ayudante asignado para mañana</p>
+          <div class="alert-actions">
+            <button class="btn btn-xs btn-rosa" onclick="showPage('reservas')">Asignar ahora</button>
+          </div>
+        </div>
+
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <div class="kpi-value">12</div>
+            <div class="kpi-label">Citas hoy</div>
+            <div class="kpi-change">▲ +2 vs ayer</div>
+          </div>
+          <div class="kpi-card rosa">
+            <div class="kpi-value">3</div>
+            <div class="kpi-label">En progreso ahora</div>
+            <div class="kpi-change">6 activos hoy</div>
+          </div>
+          <div class="kpi-card">
+            <div class="kpi-value">$2.8M</div>
+            <div class="kpi-label">Ingresos mayo</div>
+            <div class="kpi-change">▲ +15% vs abril</div>
+          </div>
+          <div class="kpi-card rosa">
+            <div class="kpi-value">8.7</div>
+            <div class="kpi-label">NPS promedio</div>
+            <div class="kpi-change">★ Excelente</div>
+          </div>
+        </div>
+
+        <h3 style="color:var(--verde);margin-bottom:14px;">🔴 Actividad en tiempo real</h3>
+        <div class="realtime-grid">
+          <div class="helper-status">
+            <div class="hs-dot green"></div>
+            <div><div class="hs-name">Carmen Ruiz</div><div class="hs-info">En progreso · La Pola</div></div>
+          </div>
+          <div class="helper-status">
+            <div class="hs-dot blue"></div>
+            <div><div class="hs-name">Luis Herrera</div><div class="hs-info">En tránsito · El Jordán</div></div>
+          </div>
+          <div class="helper-status">
+            <div class="hs-dot yellow"></div>
+            <div><div class="hs-name">Ana Morales</div><div class="hs-info">Asignada · Inicia 2pm</div></div>
+          </div>
+          <div class="helper-status">
+            <div class="hs-dot green"></div>
+            <div><div class="hs-name">Pedro Gómez</div><div class="hs-info">En progreso · Calambeo</div></div>
+          </div>
+        </div>
+
+        <div class="table-card">
+          <div class="table-header">
+            <h3>Próximas reservas pendientes de asignación</h3>
+          </div>
+          <table>
+            <thead>
+              <tr><th>Reserva</th><th>Servicio</th><th>Fecha</th><th>Cliente</th><th>Estado</th><th>Acción</th></tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><strong>AYU-0043</strong></td>
+                <td>🏠 Hogar · 4h</td>
+                <td>May 16 · 8am</td>
+                <td>Martha Rueda</td>
+                <td><span class="badge badge-yellow">⚠ Sin asignar</span></td>
+                <td><button class="btn btn-rosa btn-xs" onclick="abrirAsignacion()">Asignar</button></td>
+              </tr>
+              <tr>
+                <td><strong>AYU-0042</strong></td>
+                <td>👴 Acompañ. · 3h</td>
+                <td>May 16 · 10am</td>
+                <td>Jorge Patiño</td>
+                <td><span class="badge badge-yellow">⚠ Sin asignar</span></td>
+                <td><button class="btn btn-rosa btn-xs" onclick="abrirAsignacion()">Asignar</button></td>
+              </tr>
+              <tr>
+                <td><strong>AYU-0041</strong></td>
+                <td>📱 Tecnología · 2h</td>
+                <td>May 17 · 9am</td>
+                <td>Lucía Vargas</td>
+                <td><span class="badge badge-blue">✓ Asignado</span></td>
+                <td><button class="btn btn-outline btn-xs">Ver</button></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- RESERVAS -->
+      <div class="page" id="page-reservas">
+        <div style="display:flex;gap:10px;margin-bottom:20px;flex-wrap:wrap;">
+          <button class="btn btn-sm" style="background:var(--rosa);color:#fff;">Todas (58)</button>
+          <button class="btn btn-sm btn-outline">Sin asignar (2)</button>
+          <button class="btn btn-sm btn-outline">En progreso (3)</button>
+          <button class="btn btn-sm btn-outline">Hoy (12)</button>
+        </div>
+        <div class="table-card">
+          <div class="table-header">
+            <h3>Reservas — Mayo 2026</h3>
+            <button class="btn btn-verde btn-sm" onclick="abrirNuevaReserva()">+ Nueva reserva</button>
+          </div>
+          <table>
+            <thead>
+              <tr><th>#</th><th>Servicio</th><th>Fecha/Hora</th><th>Cliente</th><th>Ayudante</th><th>Estado</th><th></th></tr>
+            </thead>
+            <tbody>
+              <tr><td>AYU-0043</td><td>🏠 Hogar</td><td>May 16 · 8am</td><td>Martha Rueda</td><td>—</td><td><span class="badge badge-yellow">Sin asignar</span></td><td><button class="btn btn-rosa btn-xs" onclick="abrirAsignacion()">Asignar</button></td></tr>
+              <tr><td>AYU-0042</td><td>👴 Acompañ.</td><td>May 16 · 10am</td><td>Jorge Patiño</td><td>—</td><td><span class="badge badge-yellow">Sin asignar</span></td><td><button class="btn btn-rosa btn-xs" onclick="abrirAsignacion()">Asignar</button></td></tr>
+              <tr><td>AYU-0041</td><td>📱 Tecnología</td><td>May 15 · 9am</td><td>María González</td><td>Carmen R.</td><td><span class="badge badge-green">En progreso</span></td><td><button class="btn btn-outline btn-xs">Ver</button></td></tr>
+              <tr><td>AYU-0040</td><td>🛒 Trámites</td><td>May 15 · 8am</td><td>Ana Morales</td><td>Luis H.</td><td><span class="badge badge-orange">En tránsito</span></td><td><button class="btn btn-outline btn-xs">Ver</button></td></tr>
+              <tr><td>AYU-0039</td><td>🏠 Hogar</td><td>May 14 · 9am</td><td>Pedro Suárez</td><td>Ana M.</td><td><span class="badge badge-green" style="background:#F0FDF4;color:#16A34A;">Completado</span></td><td><button class="btn btn-outline btn-xs">Bitácora</button></td></tr>
+              <tr><td>AYU-0038</td><td>👴 Acompañ.</td><td>May 14 · 10am</td><td>Rosa García</td><td>Carmen R.</td><td><span class="badge badge-green" style="background:#F0FDF4;color:#16A34A;">Completado</span></td><td><button class="btn btn-outline btn-xs">Bitácora</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- AYUDANTES -->
+      <div class="page" id="page-ayudantes">
+        <div class="table-card">
+          <div class="table-header">
+            <h3>Nuestro equipo de Ayuditas</h3>
+            <button class="btn btn-verde btn-sm">+ Agregar ayudante</button>
+          </div>
+          <table>
+            <thead>
+              <tr><th>Nombre</th><th>Cédula</th><th>Estado</th><th>Calificación</th><th>Horas período</th><th>Acciones</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>Carmen Ruiz</strong></td><td>1.075.XXX</td><td><span class="badge badge-green">Activa</span></td><td>★ 4.9</td><td>42h</td><td><button class="btn btn-outline btn-xs">Ver perfil</button></td></tr>
+              <tr><td><strong>Luis Herrera</strong></td><td>1.040.XXX</td><td><span class="badge badge-green">Activo</span></td><td>★ 4.7</td><td>38h</td><td><button class="btn btn-outline btn-xs">Ver perfil</button></td></tr>
+              <tr><td><strong>Ana Morales</strong></td><td>1.092.XXX</td><td><span class="badge badge-green">Activa</span></td><td>★ 4.8</td><td>35h</td><td><button class="btn btn-outline btn-xs">Ver perfil</button></td></tr>
+              <tr><td><strong>Pedro Gómez</strong></td><td>7.710.XXX</td><td><span class="badge badge-green">Activo</span></td><td>★ 4.6</td><td>30h</td><td><button class="btn btn-outline btn-xs">Ver perfil</button></td></tr>
+              <tr><td><strong>Claudia Ríos</strong></td><td>1.108.XXX</td><td><span class="badge badge-gray">Vacaciones</span></td><td>★ 4.9</td><td>0h</td><td><button class="btn btn-outline btn-xs">Ver perfil</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- CLIENTES -->
+      <div class="page" id="page-clientes">
+        <div class="table-card">
+          <div class="table-header">
+            <h3>Base de clientes</h3>
+            <input type="text" placeholder="Buscar cliente..." style="padding:8px 14px;border:1px solid var(--gris);border-radius:8px;font-size:13px;outline:none;">
+          </div>
+          <table>
+            <thead>
+              <tr><th>Nombre</th><th>WhatsApp</th><th>Barrio</th><th>Adultos a cargo</th><th>Reservas</th><th>Suscripción</th></tr>
+            </thead>
+            <tbody>
+              <tr><td><strong>María González</strong></td><td>317 454 4424</td><td>La Pola</td><td>Don Alberto (81)</td><td>8</td><td><span class="badge badge-green">20h activo</span></td></tr>
+              <tr><td><strong>Jorge Patiño</strong></td><td>312 XXX XXXX</td><td>El Salado</td><td>Doña Rosa (74)</td><td>5</td><td><span class="badge badge-gray">Sin paquete</span></td></tr>
+              <tr><td><strong>Martha Rueda</strong></td><td>315 XXX XXXX</td><td>Calambeo</td><td>Don Luis (79)</td><td>12</td><td><span class="badge badge-yellow">30h por vencer</span></td></tr>
+              <tr><td><strong>Ana Morales</strong></td><td>310 XXX XXXX</td><td>El Jordán</td><td>Doña Carmen (80)</td><td>3</td><td><span class="badge badge-gray">Sin paquete</span></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- FINANCIERO -->
+      <div class="page" id="page-financiero">
+        <div class="kpi-grid" style="grid-template-columns:repeat(3,1fr);">
+          <div class="kpi-card"><div class="kpi-value">$2.8M</div><div class="kpi-label">Ingresos mayo</div></div>
+          <div class="kpi-card rosa"><div class="kpi-value">$1.15M</div><div class="kpi-label">Nómina pendiente</div></div>
+          <div class="kpi-card"><div class="kpi-value">$1.65M</div><div class="kpi-label">Utilidad estimada</div></div>
+        </div>
+        <div class="table-card">
+          <div class="table-header">
+            <h3>💰 Liquidación período 1–15 Mayo</h3>
+            <button class="btn btn-verde btn-sm">Calcular liquidación</button>
+          </div>
+          <table>
+            <thead><tr><th>Ayudante</th><th>Horas</th><th>Tarifa/h</th><th>Total bruto</th><th>Estado</th><th>Acción</th></tr></thead>
+            <tbody>
+              <tr><td><strong>Carmen Ruiz</strong></td><td>42h</td><td>$10.000</td><td>$420.000</td><td><span class="badge badge-yellow">En revisión</span></td><td><button class="btn btn-verde btn-xs">Aprobar</button></td></tr>
+              <tr><td><strong>Luis Herrera</strong></td><td>38h</td><td>$10.000</td><td>$380.000</td><td><span class="badge badge-yellow">En revisión</span></td><td><button class="btn btn-verde btn-xs">Aprobar</button></td></tr>
+              <tr><td><strong>Ana Morales</strong></td><td>35h</td><td>$10.000</td><td>$350.000</td><td><span class="badge badge-yellow">En revisión</span></td><td><button class="btn btn-verde btn-xs">Aprobar</button></td></tr>
+              <tr><td><strong>Pedro Gómez</strong></td><td>30h</td><td>$10.000</td><td>$300.000</td><td><span class="badge badge-green">Aprobado</span></td><td><button class="btn btn-outline btn-xs">Ver</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- REPORTES -->
+      <div class="page" id="page-reportes">
+        <div class="table-card" style="padding:24px;">
+          <h3 style="color:var(--verde);margin-bottom:20px;">📊 Servicios más solicitados — Mayo 2026</h3>
+          <div class="chart-bar-wrap">
+            <div class="bar-row"><span class="bar-label">👴 Acompañamiento</span><div class="bar-track"><div class="bar-fill" style="width:45%;background:var(--verde);"></div></div><span class="bar-pct">45%</span></div>
+            <div class="bar-row"><span class="bar-label">🏠 Ayuda en el Hogar</span><div class="bar-track"><div class="bar-fill" style="width:28%;"></div></div><span class="bar-pct">28%</span></div>
+            <div class="bar-row"><span class="bar-label">🛒 Compras/Trámites</span><div class="bar-track"><div class="bar-fill" style="width:15%;background:var(--rosa-suave);"></div></div><span class="bar-pct">15%</span></div>
+            <div class="bar-row"><span class="bar-label">📱 Tecnología</span><div class="bar-track"><div class="bar-fill" style="width:12%;background:var(--verde-suave);"></div></div><span class="bar-pct">12%</span></div>
+          </div>
+        </div>
+        <div class="table-card" style="padding:24px;">
+          <h3 style="color:var(--verde);margin-bottom:16px;">⭐ NPS de Satisfacción — Mayo 2026</h3>
+          <div class="bar-row"><span class="bar-label">😊 Promotores (9–10)</span><div class="bar-track"><div class="bar-fill" style="width:68%;background:#10B981;"></div></div><span class="bar-pct" style="color:#10B981;">68%</span></div>
+          <div class="bar-row"><span class="bar-label">😐 Pasivos (7–8)</span><div class="bar-track"><div class="bar-fill" style="width:24%;background:#F59E0B;"></div></div><span class="bar-pct" style="color:#F59E0B;">24%</span></div>
+          <div class="bar-row"><span class="bar-label">😞 Detractores (0–6)</span><div class="bar-track"><div class="bar-fill" style="width:8%;background:#EF4444;"></div></div><span class="bar-pct" style="color:#EF4444;">8%</span></div>
+          <p style="margin-top:16px;font-size:16px;font-weight:700;color:var(--verde);">NPS Score: <span style="color:var(--rosa);font-size:22px;">+60</span> — Excelente 🎉</p>
+        </div>
+      </div>
+
+      <!-- CONFIG -->
+      <div class="page" id="page-config">
+        <div class="table-card" style="padding:24px;margin-bottom:20px;">
+          <h3 style="color:var(--verde);margin-bottom:20px;">⚙️ Datos de la Empresa</h3>
+          <div class="form-group"><label>WhatsApp principal</label><input type="tel" value="317 454 4424"></div>
+          <div class="form-group"><label>WhatsApp secundario</label><input type="tel" value="3165202540"></div>
+          <div class="form-group"><label>Correo empresarial</label><input type="email" value="ayuditas888@gmail.com"></div>
+          <div class="form-group"><label>Ciudad</label><input type="text" value="Ibagué"></div>
+          <button class="btn btn-verde">Guardar cambios</button>
+        </div>
+        <div class="table-card" style="padding:24px;">
+          <h3 style="color:var(--verde);margin-bottom:16px;">🔗 Estado de Integraciones</h3>
+          <table>
+            <thead><tr><th>Servicio</th><th>Estado</th><th></th></tr></thead>
+            <tbody>
+              <tr><td>📅 Google Calendar</td><td><span class="badge badge-green">● Conectado</span></td><td><button class="btn btn-outline btn-xs">Configurar</button></td></tr>
+              <tr><td>💬 WhatsApp Business</td><td><span class="badge badge-green">● Conectado</span></td><td><button class="btn btn-outline btn-xs">Configurar</button></td></tr>
+              <tr><td>💳 Wompi (pagos)</td><td><span class="badge badge-yellow">⚠ Sandbox</span></td><td><button class="btn btn-rosa btn-xs">Activar producción</button></td></tr>
+              <tr><td>🗺️ Google Maps</td><td><span class="badge badge-green">● Conectado</span></td><td><button class="btn btn-outline btn-xs">Configurar</button></td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+
+      <!-- AGENDA -->
+      <div class="page" id="page-agenda">
+        <div class="table-card" style="padding:24px;">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;">
+            <h3 style="color:var(--verde);">Semana 15–19 Mayo 2026</h3>
+            <div style="display:flex;gap:8px;">
+              <button class="btn btn-outline btn-sm">◀ Anterior</button>
+              <button class="btn btn-sm" style="background:var(--rosa-claro);color:var(--rosa);">Hoy</button>
+              <button class="btn btn-outline btn-sm">Siguiente ▶</button>
+            </div>
+          </div>
+          <div style="display:grid;grid-template-columns:repeat(5,1fr);gap:10px;">
+            <div style="text-align:center;">
+              <div style="font-weight:700;color:var(--verde);padding:8px;background:var(--crema);border-radius:8px;margin-bottom:8px;font-size:13px;">LU 15</div>
+              <div style="background:var(--rosa-claro);border-radius:8px;padding:10px;margin-bottom:6px;font-size:12px;border-left:3px solid var(--rosa);text-align:left;"><strong>Carmen</strong><br>9–11am<br>Tecno.</div>
+              <div style="background:#E0F2FE;border-radius:8px;padding:10px;font-size:12px;border-left:3px solid #3B82F6;text-align:left;"><strong>Luis</strong><br>8am–12<br>Acompañ.</div>
+            </div>
+            <div style="text-align:center;">
+              <div style="font-weight:700;color:var(--verde);padding:8px;background:var(--crema);border-radius:8px;margin-bottom:8px;font-size:13px;">MA 16</div>
+              <div style="background:#FEF3C7;border-radius:8px;padding:10px;margin-bottom:6px;font-size:12px;border-left:3px solid #F59E0B;text-align:left;"><strong>⚠ Sin asignar</strong><br>8am<br>Hogar 4h</div>
+              <div style="background:#FEF3C7;border-radius:8px;padding:10px;font-size:12px;border-left:3px solid #F59E0B;text-align:left;"><strong>⚠ Sin asignar</strong><br>10am<br>Acompañ.</div>
+            </div>
+            <div style="text-align:center;">
+              <div style="font-weight:700;color:var(--verde);padding:8px;background:var(--crema);border-radius:8px;margin-bottom:8px;font-size:13px;">MI 17</div>
+              <div style="background:var(--rosa-claro);border-radius:8px;padding:10px;font-size:12px;border-left:3px solid var(--rosa);text-align:left;"><strong>Carmen</strong><br>9–11am<br>Tecno.</div>
+            </div>
+            <div style="text-align:center;">
+              <div style="font-weight:700;color:var(--verde);padding:8px;background:var(--crema);border-radius:8px;margin-bottom:8px;font-size:13px;">JU 18</div>
+              <div style="background:#D1FAE5;border-radius:8px;padding:10px;font-size:12px;border-left:3px solid #10B981;text-align:left;"><strong>Ana</strong><br>10am–1pm<br>Hogar</div>
+            </div>
+            <div style="text-align:center;">
+              <div style="font-weight:700;color:var(--verde);padding:8px;background:var(--crema);border-radius:8px;margin-bottom:8px;font-size:13px;">VI 19</div>
+              <div style="background:#E0F2FE;border-radius:8px;padding:10px;font-size:12px;border-left:3px solid #3B82F6;text-align:left;"><strong>Luis</strong><br>9am–1pm<br>Trámites</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- MODAL ASIGNACIÓN -->
+<div class="overlay" id="modalAsignacion">
+  <div class="modal-box">
+    <h3>Asignar Ayudante — AYU-0043</h3>
+    <div style="background:var(--crema);border-radius:12px;padding:14px;margin-bottom:20px;font-size:14px;">
+      🏠 Hogar · 4h · Lun 16 Mayo · 8:00 AM<br>
+      Cliente: Martha Rueda · Calambeo
+    </div>
+    <p style="font-weight:700;color:var(--verde);margin-bottom:12px;font-size:14px;">Ayudantes disponibles ese horario:</p>
+    <div style="border:2px solid var(--rosa);border-radius:12px;padding:14px;margin-bottom:10px;cursor:pointer;background:var(--rosa-claro);">
+      <div style="display:flex;justify-content:space-between;align-items:center;">
+        <div><strong>Carmen Ruiz</strong> ★ 4.9<br><span style="font-size:13px;color:#9a8880;">Libre ese horario</span></div>
+        <span style="color:var(--verde);font-size:20px;">✓</span>
+      </div>
+    </div>
+    <div style="border:2px solid var(--gris);border-radius:12px;padding:14px;margin-bottom:20px;cursor:pointer;">
+      <strong>Luis Herrera</strong> ★ 4.7<br><span style="font-size:13px;color:#9a8880;">Libre ese horario</span>
+    </div>
+    <div style="display:flex;gap:10px;">
+      <button class="btn btn-verde" style="flex:1;" onclick="cerrarModal('modalAsignacion')">✓ Asignar y notificar</button>
+      <button class="btn btn-outline" onclick="cerrarModal('modalAsignacion')">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<!-- MODAL NUEVA RESERVA -->
+<div class="overlay" id="modalNueva">
+  <div class="modal-box">
+    <h3>Nueva Reserva</h3>
+    <div class="form-group"><label>Cliente</label><select><option>María González</option><option>Jorge Patiño</option><option>Martha Rueda</option></select></div>
+    <div class="form-group"><label>Servicio</label><select><option>Acompañamiento Adulto Mayor</option><option>Compras y Trámites</option><option>Ayuda en el Hogar</option><option>Ayuda Tecnológica</option></select></div>
+    <div class="form-group"><label>Fecha</label><input type="date"></div>
+    <div class="form-group"><label>Hora de inicio</label><select><option>8:00 AM</option><option>9:00 AM</option><option>10:00 AM</option><option>2:00 PM</option></select></div>
+    <div class="form-group"><label>Duración</label><select><option>2 horas</option><option>3 horas</option><option>4 horas</option></select></div>
+    <div style="display:flex;gap:10px;margin-top:8px;">
+      <button class="btn btn-verde" style="flex:1;" onclick="cerrarModal('modalNueva')">Crear reserva</button>
+      <button class="btn btn-outline" onclick="cerrarModal('modalNueva')">Cancelar</button>
+    </div>
+  </div>
+</div>
+
+<script>
+  const pageTitles = {
+    dashboard:'Dashboard General', agenda:'Agenda de Operaciones',
+    reservas:'Gestión de Reservas', clientes:'Base de Clientes',
+    ayudantes:'Equipo de Ayudantes', financiero:'Gestión Financiera',
+    reportes:'Reportes y Analítica', config:'Configuración'
+  };
+
+  function entrarAdmin() {
+    document.getElementById('loginWrap').style.display = 'none';
+    document.getElementById('adminApp').classList.add('visible');
+  }
+
+  function showPage(name) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + name).classList.add('active');
+    document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+    document.getElementById('link-' + name).classList.add('active');
+    document.getElementById('pageTitle').textContent = pageTitles[name] || name;
+  }
+
+  function abrirAsignacion() { document.getElementById('modalAsignacion').classList.add('open'); }
+  function abrirNuevaReserva() { document.getElementById('modalNueva').classList.add('open'); }
+  function cerrarModal(id) { document.getElementById(id).classList.remove('open'); }
+  document.querySelectorAll('.overlay').forEach(o => {
+    o.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('open'); });
+  });
+</script>
+</body>
+</html>
