@@ -528,5 +528,45 @@
     o.addEventListener('click', function(e) { if (e.target === this) this.classList.remove('open'); });
   });
 </script>
+
+<!-- BARRA DE NAVEGACIÓN ENTRE PORTALES (solo prototipo) -->
+<div style="
+  position:fixed; bottom:0; left:0; right:0; z-index:500;
+  background:rgba(30,20,15,0.93); backdrop-filter:blur(8px);
+  display:flex; align-items:center; justify-content:center; gap:0;
+  border-top:2px solid rgba(255,255,255,.1);
+  font-family:'Nunito',sans-serif;
+">
+  <div style="color:rgba(255,255,255,.45);font-size:11px;font-weight:700;padding:0 16px;letter-spacing:.5px;text-transform:uppercase;white-space:nowrap;">
+    Vista prototipo:
+  </div>
+  <a href="index.html" style="
+    flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:11px 8px; text-decoration:none; gap:3px;
+    border-right:1px solid rgba(255,255,255,.1);
+  ">
+    <span style="font-size:20px;">🌐</span>
+    <span style="font-size:11px; font-weight:800; color:#fff;">Portal Cliente</span>
+    <span style="font-size:10px; color:rgba(255,255,255,.5);">Página pública</span>
+  </a>
+  <a href="portal-ayudante.html" style="
+    flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:11px 8px; text-decoration:none; gap:3px;
+    border-right:1px solid rgba(255,255,255,.1);
+  ">
+    <span style="font-size:20px;">🤝</span>
+    <span style="font-size:11px; font-weight:800; color:#fff;">Portal Ayudante</span>
+    <span style="font-size:10px; color:rgba(255,255,255,.5);">Vista móvil</span>
+  </a>
+  <a href="portal-admin.html" style="
+    flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center;
+    padding:11px 8px; text-decoration:none; gap:3px;
+    background:rgba(107,143,94,0.35);
+  ">
+    <span style="font-size:20px;">⚙️</span>
+    <span style="font-size:11px; font-weight:800; color:#fff;">Panel Admin</span>
+    <span style="font-size:10px; color:rgba(255,255,255,.5);">Dueños</span>
+  </a>
+</div>
 </body>
 </html>
